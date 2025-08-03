@@ -1,0 +1,26 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+CREATE EXTENSION IF NOT EXISTS "vector";
+
+create table public.legal_chunks (
+  id uuid not null default gen_random_uuid (),
+  document_type text not null,
+  jurisdiction text not null,
+  language text not null,
+  section_title text not null,
+  section_title_embedding vector(768) not null,
+  article_number text not null,
+  title text not null,
+  body text not null,
+  tags text[] null,
+  article_embedding vector(768) not null,
+  source_url text not null,
+  date_published date not null,
+  created_at timestamp with time zone null default now(),
+  updated_at timestamp with time zone null default now(),
+  is_active boolean not null default true,
+  constraint legal_chunks_pkey primary key (id)
+) TABLESPACE pg_default;
+
+create index IF not exists legal_chunks_embedding_idx on public.legal_chunks using hnsw (article_embedding vector_cosine_ops) with  (m = '16', ef_construction = '64') TABLESPACE pg_default;
+create index IF not exists section_title_embedding_idx on public.legal_chunks using hnsw (section_title_embedding vector_cosine_ops) with  (m = '16', ef_construction = '64') TABLESPACE pg_default;
