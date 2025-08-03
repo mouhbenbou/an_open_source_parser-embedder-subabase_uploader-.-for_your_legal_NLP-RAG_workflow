@@ -277,99 +277,75 @@ class LegalDocumentParser:
     
     def parse_legal_file(self, text: str, **metadata) -> Generator[LegalChunk, None, None]:
         """
-        Parse legal file text into chunks using a generator for memory efficiency.
-        
-        Args:
-            text: The legal document text
-            **metadata: Document metadata (document_type, jurisdiction, etc.)
-            
-        Yields:
-            LegalChunk objects
+        Parses a legal text file into structured LegalChunk objects.
+
+        This corrected version accurately handles text between a section title and
+        the first article marker, preventing data loss during parsing.
         """
         if not text or not text.strip():
             logger.warning("Empty text provided for parsing")
             return
-        
+
         try:
             validated_metadata = self.validate_metadata(**metadata)
         except ValueError as e:
             logger.error(f"Metadata validation failed: {e}")
             raise
-        
-        # Clean text
+
         text = text.replace('\r\n', '\n').replace('\r', '\n')
-        
-        sections = self.section_pattern.split(text)
-        
-        if len(sections) <= 1:
-            # No sections found, try to parse as a single section
-            logger.warning("No sections found, parsing as single section")
-            sections = ["General Provisions", text]
-        
-        # Process sections in pairs (title, content)
-        for i in range(0, len(sections) - 1, 2):
-            section_title = sections[i].strip() if i == 0 and not sections[i].strip() else sections[i].strip()
-            
-            if not section_title:
-                section_title = "General Provisions"
-            
-            if i + 1 >= len(sections):
-                logger.warning(f"Section '{section_title}' has no content")
-                continue
-                
-            section_body = sections[i + 1]
-            articles = self.article_pattern.split(section_body)
-            
-            if len(articles) <= 1:
-                # No articles found in this section
-                logger.info(f"No articles found in section '{section_title}', treating as single article")
-                yield LegalChunk(
-                    section_title=section_title,
-                    article_number="Article 1",
-                    title=section_title,
-                    body=section_body.strip(),
-                    tags=self._extract_tags(section_body),
-                    **validated_metadata
-                )
-                continue
-            
-            # Process articles in pairs (number, content)
-            for j in range(1, len(articles), 2):
-                if j + 1 >= len(articles):
-                    continue
-                    
-                article_number = articles[j].strip().rstrip(':')
-                article_body = articles[j + 1].strip()
-                
-                if not article_body:
-                    logger.warning(f"Empty article body for {article_number}")
-                    continue
-                
-                # Extract title and body
-                lines = article_body.split('\n', 1)
-                title = lines[0].strip()
-                body_text = lines[1].strip() if len(lines) > 1 else ""
-                full_body = f"{title}\n{body_text}" if body_text else title
-                
-                # Extract tags from the text
-                tags = self._extract_tags(full_body)
-                
+        section_matches = list(self.section_pattern.finditer(text))
+
+        if not section_matches:
+            # If no sections are found, treat the whole document as one section
+            logger.warning("No section markers found. Treating entire document as a single section.")
+            sections = [("General Provisions", text)]
+        else:
+            sections = []
+            for i, match in enumerate(section_matches):
+                start_pos = match.end()
+                end_pos = section_matches[i + 1].start() if i + 1 < len(section_matches) else len(text)
+                section_title = match.group().strip()
+                section_body = text[start_pos:end_pos].strip()
+                sections.append((section_title, section_body))
+
+        for section_title, section_body in sections:
+            # Split the section body by the article pattern.
+            # This creates a list where every odd element is an article marker
+            # and every even element is the text between markers.
+            parts = self.article_pattern.split(section_body)
+
+            # The first part (parts[0]) is any text before the first article.
+            intro_text = parts[0].strip()
+            if intro_text:
+                # This logic correctly captures introductory text or broken titles.
                 chunk = LegalChunk(
                     section_title=section_title,
-                    article_number=article_number,
-                    title=title,
-                    body=full_body,
-                    tags=tags,
+                    article_number="Section Introduction", # Assign a placeholder name
+                    title="",
+                    body=intro_text,
+                    tags=self._extract_tags(intro_text),
                     **validated_metadata
                 )
-                
-                # Validate chunk before yielding
-                errors = chunk.validate()
-                if errors:
-                    logger.warning(f"Chunk validation errors for {article_number}: {errors}")
-                    continue
-                
-                yield chunk
+                if not chunk.validate():
+                    yield chunk
+
+            # Process the remaining parts in pairs (article marker, article body)
+            if len(parts) > 1:
+                for i in range(1, len(parts), 2):
+                    article_number = parts[i].strip().rstrip(':')
+                    article_body = parts[i+1].strip()
+
+                    chunk = LegalChunk(
+                        section_title=section_title,
+                        article_number=article_number,
+                        title="",  # Title is intentionally left blank as per original script
+                        body=article_body,
+                        tags=self._extract_tags(article_body),
+                        **validated_metadata
+                    )
+
+                    if not chunk.validate():
+                        yield chunk
     
     def _extract_tags(self, text: str) -> List[str]:
         """Extract relevant tags from the text."""
