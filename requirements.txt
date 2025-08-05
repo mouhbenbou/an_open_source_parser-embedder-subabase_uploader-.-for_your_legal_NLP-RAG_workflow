@@ -10,4 +10,5 @@ pandas
 requests
 tqdm
 huggingface-hub
-sentencepiece
+sentencepiece==0.1.99
+
