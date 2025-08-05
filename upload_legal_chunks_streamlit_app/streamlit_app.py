@@ -399,20 +399,52 @@ class LegalDocumentParser:
         """Extract relevant tags from the text."""
         # Predefined legal tags
         legal_tags = {
-            "contract", "agreement", "obligation", "liability", "damages", 
+            # Core legal concepts
+            "contract", "agreement", "obligation", "liability", "damages", "laws",
             "compensation", "dispute", "arbitration", "compliance", "regulation",
             "rights", "duties", "property", "ownership", "penalty", "punishment",
             "jurisdiction", "enforcement", "breach", "termination", "warranty",
-            "indemnity", "negligence", "tort", "remedy", "injunction", "crime", 
-            "family", "marriage", "human rights", "inheritance", "sale", "purchase",
-            "partnership", "company", "evidence", "proof", "witness", "court",
-            "judge", "lawsuit", "prescription", "limitation", "debtor", "creditor",
-            "payment", "performance", "rescission", "annulment", "fraud", "duress",
-            "capacity", "minor", "guardian", "representation", "agency", "power",
+            "indemnity", "negligence", "tort", "remedy", "injunction", "crime",
+
+            # Family and civil law
+            "family", "marriage", "divorce", "custody", "adoption", "human rights",
+            "inheritance", "succession", "guardianship", "minor", "parental rights",
+
+            # Commercial and corporate law
+            "sale", "purchase", "partnership", "company", "corporation", "shareholder",
+            "director", "merger", "acquisition", "bankruptcy", "insolvency",
+
+            # Procedural and evidentiary terms
+            "evidence", "proof", "witness", "testimony", "court", "judge", "lawsuit",
+            "prescription", "limitation", "appeal", "verdict", "hearing", "trial",
+
+            # Financial and contractual mechanisms
+            "debtor", "creditor", "payment", "performance", "rescission", "annulment",
+            "fraud", "duress", "capacity", "representation", "agency", "power",
+
+            # Personal status and identity
             "domicile", "residence", "nationality", "citizenship", "legal person",
-            "natural person", "good faith", "public order", "morals", "compensation"
+            "natural person", "good faith", "public order", "morals",
+
+            # International and digital law
+            "treaty", "protocol", "jurisprudence", "extradition", "cybercrime",
+            "data protection", "privacy", "intellectual property", "copyright",
+            "trademark", "patent", "licensing", "terms of service", "digital rights",
+
+            # Administrative and constitutional law
+            "statute", "ordinance", "decree", "constitution", "amendment",
+            "legislation", "executive", "judicial", "legislative", "sovereignty",
+
+            # Labor and employment law
+            "employment", "labor", "contractor", "employee", "employer", "wages",
+            "benefits", "termination", "discrimination", "harassment", "union",
+
+            # Environmental and public law
+            "environment", "pollution", "sustainability", "public health",
+            "regulatory compliance", "licensing", "zoning", "land use"
+
         }
-        
+
         tags = []
         text_lower = text.lower()
         
@@ -631,6 +663,17 @@ def create_streamlit_ui():
     -  Duplicate detection and prevention
     -  Batch processing with progress tracking
     -  Supabase pgvector integration
+
+    **IMPORTANT NOTES**:
+    -  The table designated for storing parsed and embedded legal content must be pre-created in your Supabase instance.
+    -  Ensure that the table schema matches the expected structure, including fields such as section_title, article_number, body, tags, and any metadata required by the LegalChunk model.
+    -  THE LEGAL DOCUMENTS SHPULD BE IN SECTIONS AND ARTICLES ONLY FOR EXAMPLE:
+          section x : rights of ownership
+          article z : ..... 
+          article y : ....
+    -  Both section titles and article headings may contain bracketed content.
+    -  This project is licensed under a Non-Commercial, Must-Credit Author license.
+    -  For source code inquiries , feel free to reach out via our linked-in account or email  
     """)
     
     # Initialize session state
