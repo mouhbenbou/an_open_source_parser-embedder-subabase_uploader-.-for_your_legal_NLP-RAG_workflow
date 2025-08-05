@@ -1,13 +1,13 @@
-streamlit==1.35.0
-supabase==2.25.0
-transformers==4.43.2
-torch==2.7.1+cu121 --extra-index-url https://download.pytorch.org/whl/cu121
-tenacity==9.1.2
-pgvector==0.8.0
-numpy==2.3.2
-python-dateutil==2.9.0
-pandas==2.3.1
-requests==2.32.4
-tqdm==4.67.1
-huggingface-hub==0.34.3
-sentencepiece==0.2.0
+streamlit
+supabase
+transformers
+torch
+tenacity
+pgvector
+numpy
+python-dateutil
+pandas
+requests
+tqdm
+huggingface-hub
+sentencepiece
