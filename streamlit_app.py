@@ -655,7 +655,7 @@ def create_streamlit_ui():
     
     st.title("⚖️ Legal Document Chunk Uploader (RAG-ready)")
     st.markdown("""
-    Upload legal documents and automatically parse them into chunks for Retrieval-Augmented Generation (RAG) applications. Made by Mohamed Benbouchama El Kamel in 2025/08/03 (year/month/date)
+    Upload legal documents and automatically parse them into chunks for Retrieval-Augmented Generation (RAG) applications.
     
     **Features:**
     -  Automatic section and article detection
@@ -673,7 +673,6 @@ def create_streamlit_ui():
           article y : ....
     -  Both section titles and article headings may contain bracketed content.
     -  This project is licensed under a Non-Commercial, Must-Credit Author license.
-    -  For source code inquiries , feel free to reach out via our linked-in account or email  
     """)
     
     # Initialize session state
