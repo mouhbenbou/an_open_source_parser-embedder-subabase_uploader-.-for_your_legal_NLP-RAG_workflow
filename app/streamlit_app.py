@@ -1074,7 +1074,7 @@ def create_streamlit_ui():
     """, unsafe_allow_html=True)
 
 
-    st.title("⚖️ Legal Document Chunk Uploader (RAG-ready)")
+    st.title(" Legal Document Chunk Uploader (RAG-ready)")
     st.markdown("""
     <div style="display: flex; gap: 40px; justify-content: space-between; margin-top: 2rem;">
     
