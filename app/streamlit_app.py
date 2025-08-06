@@ -1120,13 +1120,13 @@ def create_streamlit_ui():
 
     **IMPORTANT NOTES**:
     -  The table designated for storing parsed and embedded legal content must be pre-created in your Supabase instance.
-    -  Ensure that the table schema matches the expected structure, including fields such as section_title, article_number, body, tags, and any metadata required by the LegalChunk model.
+    -  Ensure that the table schema matches the expected structure (explained in the README file in the app's github repository.
     -  THE LEGAL DOCUMENTS SHPULD BE IN SECTIONS AND ARTICLES ONLY FOR EXAMPLE:
           section x : rights of ownership
           article z : ..... 
           article y : ....
     -  Both section titles and article headings may contain bracketed content.
-    -  This project is licensed under a Non-Commercial, Must-Credit Author license.
+    -  This project is licensed under the Apache License 2.0 .
     """)
 
     
