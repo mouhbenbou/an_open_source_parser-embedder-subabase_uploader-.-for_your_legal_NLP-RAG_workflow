@@ -658,6 +658,7 @@ def create_streamlit_ui():
     
     <!-- Final version: full animated legal-grade background upgrade -->
     <div id="animated-background">
+      <canvas id="bg-canvas"></canvas>
       <div class="floating-elements"></div>
     </div>
 
@@ -665,135 +666,58 @@ def create_streamlit_ui():
     /* Luxurious Court Theme CSS for Legal Document Uploader */
 
     /* Main background with animated particles and legal motifs */
-    #animated-background {
-        position: fixed;
-        inset: 0;
-        z-index: -100;
-        background: linear-gradient(270deg, #0f0f25, #1a1a2e, #0f3460, #0a0a0a);
-        background-size: 800% 800%;
-        animation: bgMotion 60s ease infinite;
-    }    
-
-    /* moving color gradient */
-    @keyframes bgMotion {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    .stApp {
-        background: transparent !important;
-        position: relative;
-        overflow: hidden;
-        min-height: 100vh;
-    }
-
-
-    .stApp::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(90deg, #0f0f25, #1a1a2e, #0f3460, #0a0a0a);
-        background-size: 400% 400%;
-        animation: moveGradient 100s ease infinite;
-        z-index: -2;
-        opacity: 0.6;
-    }
-
-    .stApp::after {
-        content: '⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️';
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 300%;
-        font-size: 22px;
-        line-height: 100px;
-        color: gold;
-        opacity: 0.03;
-        animation: legalSymbolsFloat 60s linear infinite;
-        z-index: -1;
-        white-space: nowrap;
-        pointer-events: none;
-    }
-
-    @keyframes legalSymbolsFloat {
-        0% { transform: translateX(-100%) rotate(0deg); }
-        50% { transform: translateX(100%) rotate(180deg); }
-        100% { transform: translateX(-100%) rotate(360deg); }
-    }
-
-
-    /* Particles container inside #animated-background */
-    .floating-elements::before,
-    .floating-elements::after {
-        content: '';
-        position: absolute;
-        width: 2px;
-        height: 2px;
-        background: radial-gradient(circle, rgba(255, 215, 0, 0.4), transparent);
-        border-radius: 50%;
-        box-shadow:
-            0 0 6px rgba(255, 215, 0, 0.3),
-            0 0 12px rgba(255, 215, 0, 0.2);
-        animation: floatParticles 20s linear infinite;
-        z-index: -1;
-    }
+    /* Fullscreen canvas for drifting light rays + particles */
+    #animated-background { position: fixed; inset: 0; overflow: hidden; z-index: -100; }
+    #bg-canvas { position: absolute; top:0; left:0; width:100%; height:100%; }
     
-    .floating-elements::before {
-        left: 15%;
-        top: 100%;
-        animation-delay: -6s;
-        animation-duration: 24s;
+    /* Canvas script draws soft moving light streaks */
+    @keyframes lightStreaks { 0% { opacity: 0.1; } 50% { opacity: 0.5; } 100% { opacity: 0.1; }}
+
+    /* Glassy shimmer layer */
+    #animated-background::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 70%, rgba(255,215,0,0.05), transparent 40%),
+                  radial-gradient(circle at 70% 20%, rgba(255,215,0,0.03), transparent 50%);
+      animation: shimmerLayer 20s ease-in-out infinite;
+      mix-blend-mode: screen;
     }
-    .floating-elements::after {
-        left: 80%;
-        top: 100%;
-        animation-delay: -10s;
-        animation-duration: 30s;
+    @keyframes shimmerLayer {
+      0% { transform: scale(1) translate(0,0); }
+      50% { transform: scale(1.1) translate(-5%,5%); }
+      100% { transform: scale(1) translate(0,0); }
     }
+
+    /* Floating particles bloom */
+    .floating-elements::before, .floating-elements::after {
+      content: '';
+      position: absolute;
+      width: 3px; height: 3px;
+      background: radial-gradient(circle, rgba(255,215,0,0.6), transparent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(255,215,0,0.4), 0 0 16px rgba(255,215,0,0.2);
+      animation: floatParticles 15s linear infinite;
+    }
+    .floating-elements::before { left:20%; top:100%; animation-delay:-3s; }
+    .floating-elements::after { left:80%; top:100%; animation-delay:-7s; }
 
     @keyframes floatParticles {
-        0% {
-            transform: translateY(0) scale(0);
-            opacity: 0;
-        }
-        10% {
-            opacity: 1;
-            transform: translateY(-20vh) scale(1);
-        }
-        90% {
-            opacity: 1;
-        }
-        100% {
-            transform: translateY(-100vh) scale(0);
-            opacity: 0;
-        }
+      0% { transform: translateY(0) scale(0); opacity:0; }
+      20% { opacity:1; transform: translateY(-30vh) scale(1.2); }
+      80% { opacity:1; }
+      100% { transform: translateY(-100vh) scale(0); opacity:0; }
     }
-
-    @keyframes moveGradient {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+    
+    /* stApp adjustments */
+    .stApp { background: transparent !important; color: rgba(255,255,255,0.9); }
+    .stApp::after {
+      content: '⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️';
+      position: fixed; top:0; left:-100%; width:300%; font-size:24px;
+      color: gold; opacity:0.02;
+      animation: symbolDrift 40s linear infinite; z-index:-1; white-space:nowrap;
     }
-
-
-
-
-    /* Animated floating elements */
-    .stApp .floating-elements {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: -1;
-    }
-
-
-
+    @keyframes symbolDrift { 0%{transform:translateX(-100%);} 100%{transform:translateX(100%);} }
 
     /* Title glowing effect */
     .stApp h1 {
@@ -1124,6 +1048,28 @@ def create_streamlit_ui():
             0 0 30px rgba(147, 51, 234, 0.3);
     }
     </style>
+    <script>
+    // Canvas light streak animation
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
+    let streaks = Array.from({length: 30}, () => ({ x:Math.random()*canvas.width, y:Math.random()*canvas.height, len: Math.random()*200+100, speed: Math.random()*0.5+0.2 }));
+    function draw() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      streaks.forEach(s=>{
+        ctx.strokeStyle = 'rgba(255,215,0,0.05)'; ctx.lineWidth=2;
+        ctx.beginPath(); ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x+s.len, s.y+s.len*0.2);
+        ctx.stroke();
+        s.x -= s.speed; s.y += s.speed*0.2;
+        if(s.x< -s.len) s.x=canvas.width+ s.len;
+      });
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+    </script>
+
     </span></span>
     """, unsafe_allow_html=True)
 
