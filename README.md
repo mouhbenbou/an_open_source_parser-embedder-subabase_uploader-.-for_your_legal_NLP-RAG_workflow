@@ -39,23 +39,14 @@ git clone https://github.com/your-repo/legal-document-uploader.git
 cd legal-document-uploader
 ```
 
-2. Create and activate a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # Linux/MacOS
-venv\Scripts\activate    # Windows
-```
+
 
 3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Set up environment variables:
-```bash
-echo "SUPABASE_URL=your_project_url" > .env
-echo "SUPABASE_KEY=your_service_key" >> .env
-```
+4. you don't have to worry about envirmental variables since when you run the streamlit app on your terminal and provide it with both the url and anon key of your supabase database it will handle everything on its own .
 
 ## Usage
 
@@ -68,6 +59,7 @@ streamlit run streamlit_app.py
    - Enter Supabase project URL
    - Provide service role key
    - Specify target table name (default: `legal_chunks`)
+   - you specify other advanced parameters to suit your uploading goals such as the option to enable "skip existing .." and the name of the specific embedding model you want to use
 
 3. Upload a legal text file (TXT or MD format) with the following structure:
 ```
@@ -92,23 +84,28 @@ Article 2 : Definitions include...
 ### Supabase Table Schema
 The target table must have these columns:
 ```sql
-CREATE TABLE legal_chunks (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    document_type TEXT NOT NULL,
-    jurisdiction TEXT NOT NULL,
-    language TEXT NOT NULL,
-    section_title TEXT NOT NULL,
-    article_number TEXT NOT NULL,
-    title TEXT,
-    body TEXT NOT NULL,
-    tags TEXT[],
-    source_url TEXT NOT NULL,
-    date_published DATE,
-    section_title_embedding VECTOR(768),
-    article_embedding VECTOR(768),
-    is_active BOOLEAN DEFAULT true,
-    chunk_hash TEXT UNIQUE
-);
+create table public.legal_chunks (
+  id uuid not null default gen_random_uuid (),
+  document_type text not null,
+  jurisdiction text not null,
+  language text not null,
+  section_title text not null,
+  section_title_embedding vector(768) not null,
+  article_number text not null,
+  title text not null,
+  body text not null,
+  tags text[] null,
+  article_embedding vector(768) not null,
+  source_url text not null,
+  date_published date not null,
+  created_at timestamp with time zone null default now(),
+  updated_at timestamp with time zone null default now(),
+  is_active boolean not null default true,
+  constraint legal_chunks_pkey primary key (id)
+) TABLESPACE pg_default;
+
+create index IF not exists legal_chunks_embedding_idx on public.legal_chunks using hnsw (article_embedding vector_cosine_ops) with  (m = '16', ef_construction = '64') TABLESPACE pg_default;
+create index IF not exists section_title_embedding_idx on public.legal_chunks using hnsw (section_title_embedding vector_cosine_ops) with  (m = '16', ef_construction = '64') TABLESPACE pg_default;
 ```
 
 ### Advanced Options (Sidebar)
