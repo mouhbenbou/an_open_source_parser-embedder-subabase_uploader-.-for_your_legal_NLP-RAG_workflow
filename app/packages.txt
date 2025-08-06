@@ -1,5 +1,0 @@
-cmake
-libprotobuf-dev
-protobuf-compiler
-pkg-config
-python3-dev
