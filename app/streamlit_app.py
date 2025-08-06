@@ -1106,14 +1106,6 @@ def create_streamlit_ui():
     </style>
     """, unsafe_allow_html=True)
 
-    # ADD THE COPYRIGHT FOOTER HTML HERE
-    st.markdown("""
-    <div class="copyright-footer">
-        © 2024 Legal Document Uploader | Developed by <a href="#" target="_blank">Mohamed Benbouchama El Kamel</a> | 
-        Licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License 2.0</a> | 
-        ⚖️ Empowering Legal Technology
-    </div>
-    """, unsafe_allow_html=True)
 
     st.title("⚖️ Legal Document Chunk Uploader (RAG-ready)")
     st.markdown("""
@@ -1386,6 +1378,18 @@ def create_streamlit_ui():
                     except Exception as e:
                         st.error(f" Upload failed: {str(e)}")
                         logger.exception("Upload error")
+        # Spacer to push footer down
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    
+    # Copyright footer - GUARANTEED to be at the bottom
+    st.markdown("""
+    <div class="copyright-footer-alt">
+        © 2024 Legal Document Uploader | Developed by <strong>Mohamed Benbouchama El Kamel</strong> | 
+        Licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License 2.0</a> | 
+        ⚖️ Empowering Legal Technology
+    </div>
+    """, unsafe_allow_html=True)
+
 
 def main():
     create_streamlit_ui()
