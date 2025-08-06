@@ -658,8 +658,23 @@ def create_streamlit_ui():
     /* Luxurious Court Theme CSS for Legal Document Uploader */
 
     /* Main background with animated particles and legal motifs */
+    #animated-background {
+        position: fixed;
+        inset: 0;
+        z-index: -100;
+        background: linear-gradient(270deg, #0f0f25, #1a1a2e, #0f3460, #0a0a0a);
+        background-size: 800% 800%;
+        animation: bgMotion 60s ease infinite;
+    }    
+
+    /* moving color gradient */
+    @keyframes bgMotion {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
     .stApp {
-        background: radial-gradient(circle at center, #0a0a0a, #111122, #0f0f25);
+        background: transparent !important;
         position: relative;
         overflow: hidden;
         min-height: 100vh;
@@ -680,7 +695,6 @@ def create_streamlit_ui():
         opacity: 0.6;
     }
 
-
     .stApp::after {
         content: '⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️';
         position: fixed;
@@ -697,19 +711,57 @@ def create_streamlit_ui():
         pointer-events: none;
     }
 
+    @keyframes legalSymbolsFloat {
+        0% { transform: translateX(-100%) rotate(0deg); }
+        50% { transform: translateX(100%) rotate(180deg); }
+        100% { transform: translateX(-100%) rotate(360deg); }
+    }
 
-    @keyframes backgroundShift {
-        0%, 100% { 
-            background-position: 0% 0%, 100% 100%, 50% 50%; 
-            filter: hue-rotate(0deg);
+
+    /* Particles container inside #animated-background */
+    .floating-elements::before,
+    .floating-elements::after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: radial-gradient(circle, rgba(255, 215, 0, 0.4), transparent);
+        border-radius: 50%;
+        box-shadow:
+            0 0 6px rgba(255, 215, 0, 0.3),
+            0 0 12px rgba(255, 215, 0, 0.2);
+        animation: floatParticles 20s linear infinite;
+        z-index: -1;
+    }
+    
+    .floating-elements::before {
+        left: 15%;
+        top: 100%;
+        animation-delay: -6s;
+        animation-duration: 24s;
+    }
+    .floating-elements::after {
+        left: 80%;
+        top: 100%;
+        animation-delay: -10s;
+        animation-duration: 30s;
+    }
+
+    @keyframes floatParticles {
+        0% {
+            transform: translateY(0) scale(0);
+            opacity: 0;
         }
-        33% { 
-            background-position: 100% 0%, 0% 100%, 25% 75%; 
-            filter: hue-rotate(120deg);
+        10% {
+            opacity: 1;
+            transform: translateY(-20vh) scale(1);
         }
-        66% { 
-            background-position: 50% 100%, 100% 0%, 75% 25%; 
-            filter: hue-rotate(240deg);
+        90% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100vh) scale(0);
+            opacity: 0;
         }
     }
 
@@ -719,11 +771,7 @@ def create_streamlit_ui():
         100% { background-position: 0% 50%; }
     }
 
-    @keyframes legalSymbolsFloat {
-        0% { transform: translateX(-100%) translateY(0px) rotate(0deg); }
-        50% { transform: translateX(100%) translateY(-20px) rotate(180deg); }
-        100% { transform: translateX(-100%) translateY(0px) rotate(360deg); }
-    }
+
 
 
     /* Animated floating elements */
@@ -737,52 +785,8 @@ def create_streamlit_ui():
         z-index: -1;
     }
 
-    /* Create floating legal elements with CSS */
-    .stApp .floating-elements::before,
-    .stApp .floating-elements::after {
-        content: '';
-        position: absolute;
-        width: 2px;
-        height: 2px;
-        background: radial-gradient(circle, rgba(255, 215, 0, 0.4), transparent);
-        border-radius: 50%;
-        box-shadow:
-            0 0 6px rgba(255, 215, 0, 0.3),
-            0 0 12px rgba(255, 215, 0, 0.2);
-        animation: floatingParticles 25s linear infinite;
-        z-index: -1;
-    }
 
-    .stApp .floating-elements::before {
-        left: 10%;
-        animation-delay: -8s;
-        animation-duration: 18s;
-    }
 
-    .stApp .floating-elements::after {
-        left: 85%;
-        animation-delay: -12s;
-        animation-duration: 22s;
-    }
-
-    @keyframes floatingParticles {
-        0% {
-            transform: translateY(100vh) translateX(0px) rotate(0deg) scale(0);
-            opacity: 0;
-        }
-        10% {
-            opacity: 1;
-            scale: 1;
-        }
-        90% {
-            opacity: 1;
-            scale: 1;
-        }
-        100% {
-            transform: translateY(-10vh) translateX(100px) rotate(360deg) scale(0);
-            opacity: 0;
-        }
-    }
 
     /* Title glowing effect */
     .stApp h1 {
