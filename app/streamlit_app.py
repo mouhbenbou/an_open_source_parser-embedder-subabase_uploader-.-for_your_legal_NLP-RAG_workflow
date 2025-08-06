@@ -1361,7 +1361,7 @@ def create_streamlit_ui():
     # Copyright footer - GUARANTEED to be at the bottom
     st.markdown("""
     <div class="copyright-footer-alt">
-        © 2024 Legal Document Uploader | Developed by <strong>Mohamed Benbouchama El Kamel</strong> | 
+        © 2025 Legal Document Uploader | Developed by <strong>Mohamed Benbouchama El Kamel</strong> | 
         Licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License 2.0</a> | 
         ⚖️ Empowering Legal Technology
     </div>
