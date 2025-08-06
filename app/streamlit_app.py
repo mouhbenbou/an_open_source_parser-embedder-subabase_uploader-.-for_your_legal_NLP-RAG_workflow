@@ -1130,25 +1130,34 @@ def create_streamlit_ui():
 
     st.title("⚖️ Legal Document Chunk Uploader (RAG-ready)")
     st.markdown("""
-    Upload legal documents and automatically parse them into chunks for Retrieval-Augmented Generation (RAG) applications.
+    <div style="display: flex; gap: 40px; justify-content: space-between; margin-top: 2rem;">
     
-    **Features:**
-    -  Automatic section and article detection
-    -  LegalBERT embeddings for semantic search
-    -  Duplicate detection and prevention
-    -  Batch processing with progress tracking
-    -  Supabase pgvector integration
+      <div style="flex: 1; padding-right: 20px; border-right: 2px solid rgba(255, 215, 0, 0.3);">
+        <h3 style="color: gold;">Features:</h3>
+        <ul>
+          <li>Automatic section and article detection</li>
+          <li>LegalBERT embeddings for semantic search</li>
+          <li>Duplicate detection and prevention</li>
+          <li>Batch processing with progress tracking</li>
+          <li>Supabase pgvector integration</li>
+        </ul>
+      </div>
 
-    **IMPORTANT NOTES**:
-    -  The table designated for storing parsed and embedded legal content must be pre-created in your Supabase instance.
-    -  Ensure that the table schema matches the expected structure (explained in the README file in the app's github repository.
-    -  THE LEGAL DOCUMENTS SHPULD BE IN SECTIONS AND ARTICLES ONLY FOR EXAMPLE:
-          section x : rights of ownership
-          article z : ..... 
-          article y : ....
-    -  Both section titles and article headings may contain bracketed content.
-    -  This project is licensed under the Apache License 2.0 .
-    """)
+      <div style="flex: 1; padding-left: 20px;">
+        <h3 style="color: gold;">Important Notes:</h3>
+        <ul>
+          <li>Table must be pre-created in Supabase.</li>
+          <li>Schema must match expected structure (see README).</li>
+          <li>Legal docs must follow this structure:<br>
+            <code>section x : rights of ownership</code><br>
+            <code>article z : ...</code></li>
+          <li>Section/article titles may contain brackets.</li>
+          <li>Licensed under Apache License 2.0.</li>
+        </ul>
+      </div>
+
+    </div>
+    """, unsafe_allow_html=True)
 
     
     # Initialize session state
