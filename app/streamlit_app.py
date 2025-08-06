@@ -655,17 +655,34 @@ def create_streamlit_ui():
     # ADD THE CSS HERE - RIGHT AFTER st.set_page_config()
     st.markdown("""
     <style>
-    /* Luxurious Court Theme CSS for Legal Document Uploader */
-
-    /* Main background with animated particles and legal motifs */
+    /* Main app background with animated geometric patterns */
     .stApp {
-        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #0a0a0a 100%);
+        background: #0a0b1e;
         position: relative;
         overflow: hidden;
         min-height: 100vh;
     }
 
+    /* Animated geometric background */
     .stApp::before {
+        content: '';
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: 
+            radial-gradient(circle at 25% 25%, rgba(139, 92, 246, 0.05) 0%, transparent 25%),
+            radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.05) 0%, transparent 25%),
+            radial-gradient(circle at 75% 25%, rgba(236, 72, 153, 0.03) 0%, transparent 25%),
+            radial-gradient(circle at 25% 75%, rgba(16, 185, 129, 0.03) 0%, transparent 25%);
+        animation: backgroundRotate 20s linear infinite;
+        pointer-events: none;
+        z-index: -2;
+    }
+
+    /* Floating orbs animation */
+    .stApp::after {
         content: '';
         position: fixed;
         top: 0;
@@ -673,183 +690,99 @@ def create_streamlit_ui():
         right: 0;
         bottom: 0;
         background-image: 
-            radial-gradient(circle at 20% 20%, rgba(184, 134, 11, 0.1) 0%, transparent 30%),
-            radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.1) 0%, transparent 30%),
-            radial-gradient(circle at 40% 60%, rgba(59, 130, 246, 0.1) 0%, transparent 30%);
-        animation: backgroundShift 15s ease-in-out infinite;
-        pointer-events: none;
-        z-index: -2;
-    }
-
-    .stApp::after {
-        content: '⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️';
-        position: fixed;
-        top: 0;
-        left: -100%;
-        right: 0;
-        bottom: 0;
-        font-size: 24px;
-        opacity: 0.03;
-        animation: legalSymbolsFloat 60s linear infinite;
+            radial-gradient(2px 2px at 20% 30%, rgba(139, 92, 246, 0.4), transparent),
+            radial-gradient(2px 2px at 40% 70%, rgba(59, 130, 246, 0.4), transparent),
+            radial-gradient(1px 1px at 90% 40%, rgba(236, 72, 153, 0.4), transparent),
+            radial-gradient(1px 1px at 60% 10%, rgba(16, 185, 129, 0.4), transparent);
+        background-size: 400px 400px, 300px 300px, 200px 200px, 250px 250px;
+        animation: floatingOrbs 15s ease-in-out infinite;
         pointer-events: none;
         z-index: -1;
-        white-space: nowrap;
-        line-height: 100px;
     }
 
-    @keyframes backgroundShift {
+    @keyframes backgroundRotate {
+        0% { transform: rotate(0deg) scale(1); }
+        50% { transform: rotate(180deg) scale(1.1); }
+        100% { transform: rotate(360deg) scale(1); }
+    }
+
+    @keyframes floatingOrbs {
         0%, 100% { 
-            background-position: 0% 0%, 100% 100%, 50% 50%; 
-            filter: hue-rotate(0deg);
+            background-position: 0% 0%, 100% 100%, 50% 50%, 75% 25%;
+            opacity: 0.6;
         }
-        33% { 
-            background-position: 100% 0%, 0% 100%, 25% 75%; 
-            filter: hue-rotate(120deg);
+        25% { 
+            background-position: 100% 0%, 0% 75%, 25% 75%, 50% 50%;
+            opacity: 0.8;
         }
-        66% { 
-            background-position: 50% 100%, 100% 0%, 75% 25%; 
-            filter: hue-rotate(240deg);
+        50% { 
+            background-position: 50% 100%, 75% 0%, 75% 25%, 25% 75%;
+            opacity: 0.4;
         }
-    }
-
-    @keyframes legalSymbolsFloat {
-        0% { transform: translateX(-100%) translateY(0px) rotate(0deg); }
-        50% { transform: translateX(100%) translateY(-20px) rotate(180deg); }
-        100% { transform: translateX(-100%) translateY(0px) rotate(360deg); }
-    }
-
-    /* Animated floating elements */
-    .stApp .floating-elements {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: -1;
-    }
-
-    /* Create floating legal elements with CSS */
-    .stApp .floating-elements::before,
-    .stApp .floating-elements::after {
-        content: '';
-        position: absolute;
-        width: 2px;
-        height: 2px;
-        background: radial-gradient(circle, rgba(184, 134, 11, 0.6) 0%, transparent 70%);
-        border-radius: 50%;
-        box-shadow: 
-            0 0 6px rgba(184, 134, 11, 0.4),
-            0 0 12px rgba(184, 134, 11, 0.2);
-        animation: floatingParticles 20s linear infinite;
-    }
-
-    .stApp .floating-elements::before {
-        left: 10%;
-        animation-delay: -5s;
-        animation-duration: 15s;
-    }
-
-    .stApp .floating-elements::after {
-        left: 80%;
-        animation-delay: -10s;
-        animation-duration: 25s;
-    }
-
-    @keyframes floatingParticles {
-        0% { 
-            transform: translateY(100vh) translateX(0) rotate(0deg) scale(0);
-            opacity: 0;
-        }
-        10% {
-            opacity: 1;
-            scale: 1;
-        }
-        90% {
-            opacity: 1;
-            scale: 1;
-        }
-        100% { 
-            transform: translateY(-10vh) translateX(100px) rotate(360deg) scale(0);
-            opacity: 0;
+        75% { 
+            background-position: 25% 25%, 25% 50%, 100% 0%, 0% 100%;
+            opacity: 0.7;
         }
     }
 
-    /* Title glowing effect */
-    .stApp h1 {
-        text-shadow: 
-            0 0 5px rgba(184, 134, 11, 0.5),
-            0 0 10px rgba(184, 134, 11, 0.3),
-            0 0 15px rgba(184, 134, 11, 0.2),
-            0 0 20px rgba(184, 134, 11, 0.1);
-        animation: titleGlow 3s ease-in-out infinite alternate;
-        font-weight: 700;
-        background: linear-gradient(45deg, #b8860b, #daa520, #ffd700);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    @keyframes titleGlow {
-        from { 
-            text-shadow: 
-                0 0 5px rgba(184, 134, 11, 0.3),
-                0 0 10px rgba(184, 134, 11, 0.2);
-        }
-        to { 
-            text-shadow: 
-                0 0 8px rgba(184, 134, 11, 0.6),
-                0 0 16px rgba(184, 134, 11, 0.4),
-                0 0 24px rgba(184, 134, 11, 0.2);
-        }
-    }
-
-    /* Sidebar glowing effect */
-    .stApp .css-1d391kg {
-        background: rgba(10, 10, 10, 0.9);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(184, 134, 11, 0.2);
-        border-radius: 15px;
-        box-shadow: 
-            0 8px 32px rgba(0, 0, 0, 0.3),
-            inset 0 1px 0 rgba(184, 134, 11, 0.1);
-    }
-
-    /* Form containers */
-    .stApp .stForm {
-        background: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(184, 134, 11, 0.3);
-        border-radius: 12px;
-        padding: 2rem;
-        box-shadow: 
-            0 8px 32px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(184, 134, 11, 0.1);
-        transition: all 0.3s ease;
-    }
-
-    .stApp .stForm:hover {
-        border-color: rgba(184, 134, 11, 0.5);
-        box-shadow: 
-            0 12px 40px rgba(0, 0, 0, 0.5),
-            0 0 20px rgba(184, 134, 11, 0.1);
-        transform: translateY(-2px);
-    }
-
-    /* Button glowing effects */
-    .stApp button {
-        background: linear-gradient(45deg, rgba(184, 134, 11, 0.8), rgba(218, 165, 32, 0.8));
-        border: 1px solid rgba(184, 134, 11, 0.6);
-        border-radius: 8px;
-        color: white;
-        font-weight: 600;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-        box-shadow: 
-            0 4px 15px rgba(184, 134, 11, 0.3),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        transition: all 0.3s ease;
+    /* Modern card-style containers */
+    .stApp .element-container, .stApp .stForm {
+        background: rgba(15, 16, 35, 0.8);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(75, 85, 99, 0.2);
+        border-radius: 16px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         overflow: hidden;
+    }
+
+    .stApp .element-container::before, .stApp .stForm::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(139, 92, 246, 0.5) 30%, 
+            rgba(59, 130, 246, 0.5) 70%, 
+            transparent);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    .stApp .element-container:hover::before, .stApp .stForm:hover::before {
+        opacity: 1;
+    }
+
+    .stApp .element-container:hover, .stApp .stForm:hover {
+        background: rgba(15, 16, 35, 0.95);
+        border-color: rgba(139, 92, 246, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 
+            0 20px 40px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(139, 92, 246, 0.1);
+    }
+
+    /* Ultra-modern button styling */
+    .stApp button {
+        background: linear-gradient(135deg, 
+            rgba(139, 92, 246, 0.9) 0%, 
+            rgba(124, 58, 237, 0.9) 50%,
+            rgba(109, 40, 217, 0.9) 100%);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 12px 24px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 
+            0 4px 15px rgba(139, 92, 246, 0.25),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
     .stApp button::before {
@@ -859,249 +792,364 @@ def create_streamlit_ui():
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.5s;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.2), 
+            transparent);
+        transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .stApp button::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .stApp button:hover {
-        background: linear-gradient(45deg, rgba(184, 134, 11, 1), rgba(218, 165, 32, 1));
+        background: linear-gradient(135deg, 
+            rgba(139, 92, 246, 1) 0%, 
+            rgba(124, 58, 237, 1) 50%,
+            rgba(109, 40, 217, 1) 100%);
+        transform: translateY(-3px) scale(1.02);
         box-shadow: 
-            0 6px 20px rgba(184, 134, 11, 0.5),
-            0 0 30px rgba(184, 134, 11, 0.3);
-        transform: translateY(-2px);
-        border-color: rgba(184, 134, 11, 0.8);
+            0 20px 40px rgba(139, 92, 246, 0.4),
+            0 0 30px rgba(139, 92, 246, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
     .stApp button:hover::before {
         left: 100%;
     }
 
-    /* Input fields glowing */
+    .stApp button:hover::after {
+        width: 300px;
+        height: 300px;
+    }
+
+    .stApp button:active {
+        transform: translateY(-1px) scale(0.98);
+    }
+
+    /* Premium title styling */
+    .stApp h1 {
+        background: linear-gradient(135deg, 
+            #ffffff 0%, 
+            #e0e7ff 30%, 
+            #c7d2fe 60%, 
+            #a5b4fc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 700;
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+        animation: titleShimmer 3s ease-in-out infinite;
+    }
+
+    .stApp h1::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 2px;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(139, 92, 246, 0.8), 
+            transparent);
+        animation: underlineGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes titleShimmer {
+        0%, 100% { 
+            filter: brightness(1);
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+        }
+        50% { 
+            filter: brightness(1.2);
+            text-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+        }
+    }
+
+    @keyframes underlineGlow {
+        0% { 
+            opacity: 0.5;
+            transform: translateX(-50%) scaleX(1);
+        }
+        100% { 
+            opacity: 1;
+            transform: translateX(-50%) scaleX(1.2);
+        }
+    }
+
+    /* Modern input styling */
     .stApp input, .stApp select, .stApp textarea {
-        background: rgba(0, 0, 0, 0.6);
-        border: 1px solid rgba(184, 134, 11, 0.3);
-        border-radius: 6px;
-        color: white;
-        transition: all 0.3s ease;
+        background: rgba(15, 16, 35, 0.6);
+        border: 1px solid rgba(75, 85, 99, 0.3);
+        border-radius: 10px;
+        color: #ffffff;
+        padding: 12px 16px;
+        font-size: 14px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .stApp input:focus, .stApp select:focus, .stApp textarea:focus {
-        border-color: rgba(184, 134, 11, 0.7);
+        background: rgba(15, 16, 35, 0.9);
+        border-color: rgba(139, 92, 246, 0.5);
         box-shadow: 
-            0 0 0 2px rgba(184, 134, 11, 0.2),
-            0 4px 12px rgba(184, 134, 11, 0.1);
-        background: rgba(0, 0, 0, 0.8);
+            0 0 0 3px rgba(139, 92, 246, 0.1),
+            0 8px 25px rgba(139, 92, 246, 0.15);
+        outline: none;
     }
 
-    /* Data frame styling */
-    .stApp .stDataFrame {
-        background: rgba(0, 0, 0, 0.8);
-        border-radius: 10px;
-        border: 1px solid rgba(184, 134, 11, 0.2);
+    /* Sidebar modern styling */
+    .stApp .css-1d391kg {
+        background: rgba(15, 16, 35, 0.9);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(75, 85, 99, 0.2);
+        border-radius: 20px;
+        box-shadow: 
+            0 25px 50px rgba(0, 0, 0, 0.25),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    /* Modern metrics */
+    .stApp [data-testid="metric-container"] {
+        background: rgba(15, 16, 35, 0.7);
+        border: 1px solid rgba(75, 85, 99, 0.2);
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
         overflow: hidden;
     }
 
-    /* Metric cards */
-    .stApp .metric-container {
-        background: rgba(0, 0, 0, 0.7);
-        border: 1px solid rgba(184, 134, 11, 0.3);
-        border-radius: 10px;
-        padding: 1rem;
-        transition: all 0.3s ease;
+    .stApp [data-testid="metric-container"]::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, 
+            rgba(139, 92, 246, 0.6), 
+            rgba(59, 130, 246, 0.6));
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
     }
 
-    .stApp .metric-container:hover {
-        background: rgba(0, 0, 0, 0.8);
-        border-color: rgba(184, 134, 11, 0.5);
-        box-shadow: 0 4px 15px rgba(184, 134, 11, 0.2);
-        transform: translateY(-3px);
+    .stApp [data-testid="metric-container"]:hover::before {
+        transform: scaleX(1);
     }
 
-    /* Progress bar */
+    .stApp [data-testid="metric-container"]:hover {
+        background: rgba(15, 16, 35, 0.9);
+        border-color: rgba(139, 92, 246, 0.3);
+        transform: translateY(-4px);
+        box-shadow: 
+            0 20px 40px rgba(0, 0, 0, 0.3),
+            0 0 20px rgba(139, 92, 246, 0.1);
+    }
+
+    /* Ultra-modern progress bar */
     .stApp .stProgress > div > div > div {
-        background: linear-gradient(90deg, #b8860b, #daa520, #ffd700);
-        box-shadow: 0 2px 10px rgba(184, 134, 11, 0.4);
+        background: linear-gradient(90deg, 
+            rgba(139, 92, 246, 0.8) 0%,
+            rgba(59, 130, 246, 0.8) 50%,
+            rgba(16, 185, 129, 0.8) 100%);
+        border-radius: 10px;
+        height: 8px;
+        position: relative;
+        overflow: hidden;
     }
 
-    /* Success/Error messages with glow */
+    .stApp .stProgress > div > div > div::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.4), 
+            transparent);
+        animation: progressShimmer 2s infinite;
+    }
+
+    @keyframes progressShimmer {
+        0% { left: -100%; }
+        100% { left: 100%; }
+    }
+
+    /* Modern alert styling */
     .stApp .stSuccess {
-        background: rgba(34, 197, 94, 0.1);
-        border: 1px solid rgba(34, 197, 94, 0.3);
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.1);
     }
 
     .stApp .stError {
         background: rgba(239, 68, 68, 0.1);
-        border: 1px solid rgba(239, 68, 68, 0.3);
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(239, 68, 68, 0.1);
     }
 
     .stApp .stWarning {
         background: rgba(245, 158, 11, 0.1);
-        border: 1px solid rgba(245, 158, 11, 0.3);
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        border: 1px solid rgba(245, 158, 11, 0.2);
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(245, 158, 11, 0.1);
     }
 
     .stApp .stInfo {
         background: rgba(59, 130, 246, 0.1);
-        border: 1px solid rgba(59, 130, 246, 0.3);
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1);
     }
 
-    /* Hover effects for main containers */
-    .stApp .block-container:hover {
-        background: rgba(255, 255, 255, 0.02);
-        transition: background 0.3s ease;
+    /* Modern dataframe styling */
+    .stApp .stDataFrame {
+        background: rgba(15, 16, 35, 0.8);
+        border-radius: 16px;
+        border: 1px solid rgba(75, 85, 99, 0.2);
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
     }
 
-    /* Expander styling */
+    /* File uploader modern styling */
+    .stApp .uploadedFile {
+        background: rgba(15, 16, 35, 0.7);
+        border: 1px solid rgba(75, 85, 99, 0.2);
+        border-radius: 12px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .stApp .uploadedFile:hover {
+        background: rgba(15, 16, 35, 0.9);
+        border-color: rgba(139, 92, 246, 0.3);
+        box-shadow: 0 12px 25px rgba(139, 92, 246, 0.1);
+        transform: translateY(-2px);
+    }
+
+    /* Modern expander */
     .stApp .streamlit-expanderHeader {
-        background: rgba(0, 0, 0, 0.6);
-        border: 1px solid rgba(184, 134, 11, 0.2);
-        border-radius: 8px;
-        transition: all 0.3s ease;
+        background: rgba(15, 16, 35, 0.6);
+        border: 1px solid rgba(75, 85, 99, 0.2);
+        border-radius: 10px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .stApp .streamlit-expanderHeader:hover {
-        border-color: rgba(184, 134, 11, 0.4);
-        background: rgba(0, 0, 0, 0.8);
-        box-shadow: 0 2px 8px rgba(184, 134, 11, 0.1);
+        background: rgba(15, 16, 35, 0.9);
+        border-color: rgba(139, 92, 246, 0.3);
+        box-shadow: 0 8px 20px rgba(139, 92, 246, 0.1);
     }
 
-    /* File uploader styling */
-    .stApp .uploadedFile {
-        background: rgba(0, 0, 0, 0.7);
-        border: 1px solid rgba(184, 134, 11, 0.3);
-        border-radius: 8px;
-        transition: all 0.3s ease;
-    }
-
-    .stApp .uploadedFile:hover {
-        border-color: rgba(184, 134, 11, 0.5);
-        box-shadow: 0 4px 12px rgba(184, 134, 11, 0.2);
-    }
-
-    /* Copyright footer */
-    .copyright-footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(90deg, 
-            rgba(0, 0, 0, 0.8) 0%, 
-            rgba(26, 26, 46, 0.9) 50%, 
-            rgba(0, 0, 0, 0.8) 100%);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(184, 134, 11, 0.3);
-        padding: 8px 20px;
-        z-index: 1000;
-        font-size: 12px;
-        color: rgba(255, 255, 255, 0.7);
-        text-align: center;
-        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .copyright-footer a {
-        color: rgba(184, 134, 11, 0.8);
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        text-shadow: 0 0 5px rgba(184, 134, 11, 0.3);
-    }
-
-    .copyright-footer a:hover {
-        color: rgba(218, 165, 32, 1);
-        text-shadow: 0 0 10px rgba(184, 134, 11, 0.6);
-    }
-
-    /* Scrollbar styling */
+    /* Premium scrollbar */
     .stApp ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
+        width: 6px;
+        height: 6px;
     }
 
     .stApp ::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.3);
-        border-radius: 4px;
+        background: rgba(15, 16, 35, 0.3);
+        border-radius: 3px;
     }
 
     .stApp ::-webkit-scrollbar-thumb {
-        background: linear-gradient(45deg, rgba(184, 134, 11, 0.6), rgba(218, 165, 32, 0.6));
-        border-radius: 4px;
+        background: linear-gradient(135deg, 
+            rgba(139, 92, 246, 0.6), 
+            rgba(59, 130, 246, 0.6));
+        border-radius: 3px;
         transition: all 0.3s ease;
     }
 
     .stApp ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(45deg, rgba(184, 134, 11, 0.8), rgba(218, 165, 32, 0.8));
-        box-shadow: 0 0 10px rgba(184, 134, 11, 0.4);
+        background: linear-gradient(135deg, 
+            rgba(139, 92, 246, 0.8), 
+            rgba(59, 130, 246, 0.8));
     }
 
-    /* Responsive adjustments */
+    /* Modern copyright footer */
+    .copyright-footer {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        background: rgba(15, 16, 35, 0.95) !important;
+        backdrop-filter: blur(20px) !important;
+        border-top: 1px solid rgba(75, 85, 99, 0.2) !important;
+        padding: 12px 20px !important;
+        z-index: 9999 !important;
+        font-size: 12px !important;
+        color: rgba(255, 255, 255, 0.7) !important;
+        text-align: center !important;
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .copyright-footer a {
+        color: rgba(139, 92, 246, 0.8) !important;
+        text-decoration: none !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .copyright-footer a:hover {
+        color: rgba(139, 92, 246, 1) !important;
+        text-shadow: 0 0 10px rgba(139, 92, 246, 0.4) !important;
+    }
+
+    /* Ensure main content has bottom padding */
+    .stApp .main .block-container {
+        padding-bottom: 70px !important;
+    }
+
+    /* Text colors for dark theme */
+    .stApp, .stApp * {
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    .stApp .stMarkdown {
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    /* Responsive design */
     @media (max-width: 768px) {
         .stApp h1 {
-            font-size: 1.8rem;
+            font-size: 2rem;
         }
     
         .copyright-footer {
-            font-size: 10px;
-            padding: 6px 10px;
+            font-size: 11px !important;
+            padding: 10px 15px !important;
         }
-    
-        .stApp .floating-elements::before,
-        .stApp .floating-elements::after {
-            display: none; /* Hide particles on mobile for performance */
+        
+        .stApp::after {
+            background-size: 200px 200px, 150px 150px, 100px 100px, 125px 125px;
         }
     }
 
-    /* Dark mode text colors */
-    .stApp, .stApp * {
-        color: rgba(255, 255, 255, 0.9);
-    }
-
-    .stApp .stMarkdown, .stApp .stText {
-        color: rgba(255, 255, 255, 0.85);
-    }
-
-    /* Table styling */
-    .stApp table {
-        background: rgba(0, 0, 0, 0.6);
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-    .stApp th {
-        background: rgba(184, 134, 11, 0.2);
-        color: rgba(255, 255, 255, 0.9);
-        font-weight: 600;
-    }
-
-    .stApp td {
-        border-color: rgba(184, 134, 11, 0.1);
-    }
-
-    /* Interactive hover zones */
-    .stApp .element-container:hover {
-        transition: all 0.3s ease;
-    }
-
-    /* Special glow for important elements */
-    .stApp .stButton > button[kind="primary"] {
-        background: linear-gradient(45deg, 
-            rgba(147, 51, 234, 0.8), 
-            rgba(168, 85, 247, 0.8));
-        box-shadow: 
-            0 4px 15px rgba(147, 51, 234, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
-
-    .stApp .stButton > button[kind="primary"]:hover {
-        box-shadow: 
-            0 6px 20px rgba(147, 51, 234, 0.6),
-            0 0 30px rgba(147, 51, 234, 0.3);
+    /* Performance optimization for mobile */
+    @media (max-width: 480px) {
+        .stApp::before,
+        .stApp::after {
+            animation-duration: 30s; /* Slower animations on mobile */
+        }
     }
     </style>
     """, unsafe_allow_html=True)
