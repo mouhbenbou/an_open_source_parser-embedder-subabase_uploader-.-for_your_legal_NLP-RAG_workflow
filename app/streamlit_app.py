@@ -652,6 +652,459 @@ def create_streamlit_ui():
         page_icon="⚖️",
         layout="wide"
     )
+    # ADD THE CSS HERE - RIGHT AFTER st.set_page_config()
+    st.markdown("""
+    <style>
+    /* Luxurious Court Theme CSS for Legal Document Uploader */
+
+    /* Main background with animated particles and legal motifs */
+    .stApp {
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #0a0a0a 100%);
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+    }
+
+    .stApp::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            radial-gradient(circle at 20% 20%, rgba(184, 134, 11, 0.1) 0%, transparent 30%),
+            radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.1) 0%, transparent 30%),
+            radial-gradient(circle at 40% 60%, rgba(59, 130, 246, 0.1) 0%, transparent 30%);
+        animation: backgroundShift 15s ease-in-out infinite;
+        pointer-events: none;
+        z-index: -2;
+    }
+
+    .stApp::after {
+        content: '⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️';
+        position: fixed;
+        top: 0;
+        left: -100%;
+        right: 0;
+        bottom: 0;
+        font-size: 24px;
+        opacity: 0.03;
+        animation: legalSymbolsFloat 60s linear infinite;
+        pointer-events: none;
+        z-index: -1;
+        white-space: nowrap;
+        line-height: 100px;
+    }
+
+    @keyframes backgroundShift {
+        0%, 100% { 
+            background-position: 0% 0%, 100% 100%, 50% 50%; 
+            filter: hue-rotate(0deg);
+        }
+        33% { 
+            background-position: 100% 0%, 0% 100%, 25% 75%; 
+            filter: hue-rotate(120deg);
+        }
+        66% { 
+            background-position: 50% 100%, 100% 0%, 75% 25%; 
+            filter: hue-rotate(240deg);
+        }
+    }
+
+    @keyframes legalSymbolsFloat {
+        0% { transform: translateX(-100%) translateY(0px) rotate(0deg); }
+        50% { transform: translateX(100%) translateY(-20px) rotate(180deg); }
+        100% { transform: translateX(-100%) translateY(0px) rotate(360deg); }
+    }
+
+    /* Animated floating elements */
+    .stApp .floating-elements {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    /* Create floating legal elements with CSS */
+    .stApp .floating-elements::before,
+    .stApp .floating-elements::after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: radial-gradient(circle, rgba(184, 134, 11, 0.6) 0%, transparent 70%);
+        border-radius: 50%;
+        box-shadow: 
+            0 0 6px rgba(184, 134, 11, 0.4),
+            0 0 12px rgba(184, 134, 11, 0.2);
+        animation: floatingParticles 20s linear infinite;
+    }
+
+    .stApp .floating-elements::before {
+        left: 10%;
+        animation-delay: -5s;
+        animation-duration: 15s;
+    }
+
+    .stApp .floating-elements::after {
+        left: 80%;
+        animation-delay: -10s;
+        animation-duration: 25s;
+    }
+
+    @keyframes floatingParticles {
+        0% { 
+            transform: translateY(100vh) translateX(0) rotate(0deg) scale(0);
+            opacity: 0;
+        }
+        10% {
+            opacity: 1;
+            scale: 1;
+        }
+        90% {
+            opacity: 1;
+            scale: 1;
+        }
+        100% { 
+            transform: translateY(-10vh) translateX(100px) rotate(360deg) scale(0);
+            opacity: 0;
+        }
+    }
+
+    /* Title glowing effect */
+    .stApp h1 {
+        text-shadow: 
+            0 0 5px rgba(184, 134, 11, 0.5),
+            0 0 10px rgba(184, 134, 11, 0.3),
+            0 0 15px rgba(184, 134, 11, 0.2),
+            0 0 20px rgba(184, 134, 11, 0.1);
+        animation: titleGlow 3s ease-in-out infinite alternate;
+        font-weight: 700;
+        background: linear-gradient(45deg, #b8860b, #daa520, #ffd700);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    @keyframes titleGlow {
+        from { 
+            text-shadow: 
+                0 0 5px rgba(184, 134, 11, 0.3),
+                0 0 10px rgba(184, 134, 11, 0.2);
+        }
+        to { 
+            text-shadow: 
+                0 0 8px rgba(184, 134, 11, 0.6),
+                0 0 16px rgba(184, 134, 11, 0.4),
+                0 0 24px rgba(184, 134, 11, 0.2);
+        }
+    }
+
+    /* Sidebar glowing effect */
+    .stApp .css-1d391kg {
+        background: rgba(10, 10, 10, 0.9);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(184, 134, 11, 0.2);
+        border-radius: 15px;
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(184, 134, 11, 0.1);
+    }
+
+    /* Form containers */
+    .stApp .stForm {
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(184, 134, 11, 0.3);
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(184, 134, 11, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .stApp .stForm:hover {
+        border-color: rgba(184, 134, 11, 0.5);
+        box-shadow: 
+            0 12px 40px rgba(0, 0, 0, 0.5),
+            0 0 20px rgba(184, 134, 11, 0.1);
+        transform: translateY(-2px);
+    }
+
+    /* Button glowing effects */
+    .stApp button {
+        background: linear-gradient(45deg, rgba(184, 134, 11, 0.8), rgba(218, 165, 32, 0.8));
+        border: 1px solid rgba(184, 134, 11, 0.6);
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        box-shadow: 
+            0 4px 15px rgba(184, 134, 11, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stApp button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .stApp button:hover {
+        background: linear-gradient(45deg, rgba(184, 134, 11, 1), rgba(218, 165, 32, 1));
+        box-shadow: 
+            0 6px 20px rgba(184, 134, 11, 0.5),
+            0 0 30px rgba(184, 134, 11, 0.3);
+        transform: translateY(-2px);
+        border-color: rgba(184, 134, 11, 0.8);
+    }
+
+    .stApp button:hover::before {
+        left: 100%;
+    }
+
+    /* Input fields glowing */
+    .stApp input, .stApp select, .stApp textarea {
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid rgba(184, 134, 11, 0.3);
+        border-radius: 6px;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .stApp input:focus, .stApp select:focus, .stApp textarea:focus {
+        border-color: rgba(184, 134, 11, 0.7);
+        box-shadow: 
+            0 0 0 2px rgba(184, 134, 11, 0.2),
+            0 4px 12px rgba(184, 134, 11, 0.1);
+        background: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Data frame styling */
+    .stApp .stDataFrame {
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 10px;
+        border: 1px solid rgba(184, 134, 11, 0.2);
+        overflow: hidden;
+    }
+
+    /* Metric cards */
+    .stApp .metric-container {
+        background: rgba(0, 0, 0, 0.7);
+        border: 1px solid rgba(184, 134, 11, 0.3);
+        border-radius: 10px;
+        padding: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .stApp .metric-container:hover {
+        background: rgba(0, 0, 0, 0.8);
+        border-color: rgba(184, 134, 11, 0.5);
+        box-shadow: 0 4px 15px rgba(184, 134, 11, 0.2);
+        transform: translateY(-3px);
+    }
+
+    /* Progress bar */
+    .stApp .stProgress > div > div > div {
+        background: linear-gradient(90deg, #b8860b, #daa520, #ffd700);
+        box-shadow: 0 2px 10px rgba(184, 134, 11, 0.4);
+    }
+
+    /* Success/Error messages with glow */
+    .stApp .stSuccess {
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+    }
+
+    .stApp .stError {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    }
+
+    .stApp .stWarning {
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+    }
+
+    .stApp .stInfo {
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    }
+
+    /* Hover effects for main containers */
+    .stApp .block-container:hover {
+        background: rgba(255, 255, 255, 0.02);
+        transition: background 0.3s ease;
+    }
+
+    /* Expander styling */
+    .stApp .streamlit-expanderHeader {
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid rgba(184, 134, 11, 0.2);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .stApp .streamlit-expanderHeader:hover {
+        border-color: rgba(184, 134, 11, 0.4);
+        background: rgba(0, 0, 0, 0.8);
+        box-shadow: 0 2px 8px rgba(184, 134, 11, 0.1);
+    }
+
+    /* File uploader styling */
+    .stApp .uploadedFile {
+        background: rgba(0, 0, 0, 0.7);
+        border: 1px solid rgba(184, 134, 11, 0.3);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .stApp .uploadedFile:hover {
+        border-color: rgba(184, 134, 11, 0.5);
+        box-shadow: 0 4px 12px rgba(184, 134, 11, 0.2);
+    }
+
+    /* Copyright footer */
+    .copyright-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(90deg, 
+            rgba(0, 0, 0, 0.8) 0%, 
+            rgba(26, 26, 46, 0.9) 50%, 
+            rgba(0, 0, 0, 0.8) 100%);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(184, 134, 11, 0.3);
+        padding: 8px 20px;
+        z-index: 1000;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        text-align: center;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .copyright-footer a {
+        color: rgba(184, 134, 11, 0.8);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-shadow: 0 0 5px rgba(184, 134, 11, 0.3);
+    }
+
+    .copyright-footer a:hover {
+        color: rgba(218, 165, 32, 1);
+        text-shadow: 0 0 10px rgba(184, 134, 11, 0.6);
+    }
+
+    /* Scrollbar styling */
+    .stApp ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    .stApp ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+    }
+
+    .stApp ::-webkit-scrollbar-thumb {
+        background: linear-gradient(45deg, rgba(184, 134, 11, 0.6), rgba(218, 165, 32, 0.6));
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .stApp ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(45deg, rgba(184, 134, 11, 0.8), rgba(218, 165, 32, 0.8));
+        box-shadow: 0 0 10px rgba(184, 134, 11, 0.4);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .stApp h1 {
+            font-size: 1.8rem;
+        }
+    
+        .copyright-footer {
+            font-size: 10px;
+            padding: 6px 10px;
+        }
+    
+        .stApp .floating-elements::before,
+        .stApp .floating-elements::after {
+            display: none; /* Hide particles on mobile for performance */
+        }
+    }
+
+    /* Dark mode text colors */
+    .stApp, .stApp * {
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .stApp .stMarkdown, .stApp .stText {
+        color: rgba(255, 255, 255, 0.85);
+    }
+
+    /* Table styling */
+    .stApp table {
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .stApp th {
+        background: rgba(184, 134, 11, 0.2);
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 600;
+    }
+
+    .stApp td {
+        border-color: rgba(184, 134, 11, 0.1);
+    }
+
+    /* Interactive hover zones */
+    .stApp .element-container:hover {
+        transition: all 0.3s ease;
+    }
+
+    /* Special glow for important elements */
+    .stApp .stButton > button[kind="primary"] {
+        background: linear-gradient(45deg, 
+            rgba(147, 51, 234, 0.8), 
+            rgba(168, 85, 247, 0.8));
+        box-shadow: 
+            0 4px 15px rgba(147, 51, 234, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .stApp .stButton > button[kind="primary"]:hover {
+        box-shadow: 
+            0 6px 20px rgba(147, 51, 234, 0.6),
+            0 0 30px rgba(147, 51, 234, 0.3);
+    }
+    </style>
+    """, unsafe_allow_html=True)
     
     st.title("⚖️ Legal Document Chunk Uploader (RAG-ready)")
     st.markdown("""
