@@ -654,6 +654,13 @@ def create_streamlit_ui():
     )
     # ADD THE CSS HERE - RIGHT AFTER st.set_page_config()
     st.markdown("""
+    <span><span>
+    
+    <!-- Final version: full animated legal-grade background upgrade -->
+    <div id="animated-background">
+      <div class="floating-elements"></div>
+    </div>
+
     <style>
     /* Luxurious Court Theme CSS for Legal Document Uploader */
 
@@ -1117,6 +1124,7 @@ def create_streamlit_ui():
             0 0 30px rgba(147, 51, 234, 0.3);
     }
     </style>
+    </span></span>
     """, unsafe_allow_html=True)
 
 
