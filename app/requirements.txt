@@ -1,0 +1,15 @@
+streamlit
+supabase
+transformers
+torch
+tenacity
+pgvector
+numpy
+python-dateutil
+pandas
+requests
+tqdm
+huggingface-hub
+sentencepiece==0.1.96
+
+
