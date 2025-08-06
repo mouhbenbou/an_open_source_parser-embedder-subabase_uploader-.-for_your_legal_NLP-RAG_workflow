@@ -659,11 +659,12 @@ def create_streamlit_ui():
 
     /* Main background with animated particles and legal motifs */
     .stApp {
-        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #0a0a0a 100%);
+        background: radial-gradient(circle at center, #0a0a0a, #111122, #0f0f25);
         position: relative;
         overflow: hidden;
         min-height: 100vh;
     }
+
 
     .stApp::before {
         content: '';
@@ -672,30 +673,30 @@ def create_streamlit_ui():
         left: 0;
         right: 0;
         bottom: 0;
-        background-image: 
-            radial-gradient(circle at 20% 20%, rgba(184, 134, 11, 0.1) 0%, transparent 30%),
-            radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.1) 0%, transparent 30%),
-            radial-gradient(circle at 40% 60%, rgba(59, 130, 246, 0.1) 0%, transparent 30%);
-        animation: backgroundShift 15s ease-in-out infinite;
-        pointer-events: none;
+        background: linear-gradient(90deg, #0f0f25, #1a1a2e, #0f3460, #0a0a0a);
+        background-size: 400% 400%;
+        animation: moveGradient 100s ease infinite;
         z-index: -2;
+        opacity: 0.6;
     }
 
+
     .stApp::after {
-        content: '⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️';
+        content: '⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️ § ⚖️';
         position: fixed;
         top: 0;
         left: -100%;
-        right: 0;
-        bottom: 0;
-        font-size: 24px;
+        width: 300%;
+        font-size: 22px;
+        line-height: 100px;
+        color: gold;
         opacity: 0.03;
         animation: legalSymbolsFloat 60s linear infinite;
-        pointer-events: none;
         z-index: -1;
         white-space: nowrap;
-        line-height: 100px;
+        pointer-events: none;
     }
+
 
     @keyframes backgroundShift {
         0%, 100% { 
@@ -712,11 +713,18 @@ def create_streamlit_ui():
         }
     }
 
+    @keyframes moveGradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
     @keyframes legalSymbolsFloat {
         0% { transform: translateX(-100%) translateY(0px) rotate(0deg); }
         50% { transform: translateX(100%) translateY(-20px) rotate(180deg); }
         100% { transform: translateX(-100%) translateY(0px) rotate(360deg); }
     }
+
 
     /* Animated floating elements */
     .stApp .floating-elements {
@@ -736,29 +744,30 @@ def create_streamlit_ui():
         position: absolute;
         width: 2px;
         height: 2px;
-        background: radial-gradient(circle, rgba(184, 134, 11, 0.6) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(255, 215, 0, 0.4), transparent);
         border-radius: 50%;
-        box-shadow: 
-            0 0 6px rgba(184, 134, 11, 0.4),
-            0 0 12px rgba(184, 134, 11, 0.2);
-        animation: floatingParticles 20s linear infinite;
+        box-shadow:
+            0 0 6px rgba(255, 215, 0, 0.3),
+            0 0 12px rgba(255, 215, 0, 0.2);
+        animation: floatingParticles 25s linear infinite;
+        z-index: -1;
     }
 
     .stApp .floating-elements::before {
         left: 10%;
-        animation-delay: -5s;
-        animation-duration: 15s;
+        animation-delay: -8s;
+        animation-duration: 18s;
     }
 
     .stApp .floating-elements::after {
-        left: 80%;
-        animation-delay: -10s;
-        animation-duration: 25s;
+        left: 85%;
+        animation-delay: -12s;
+        animation-duration: 22s;
     }
 
     @keyframes floatingParticles {
-        0% { 
-            transform: translateY(100vh) translateX(0) rotate(0deg) scale(0);
+        0% {
+            transform: translateY(100vh) translateX(0px) rotate(0deg) scale(0);
             opacity: 0;
         }
         10% {
@@ -769,7 +778,7 @@ def create_streamlit_ui():
             opacity: 1;
             scale: 1;
         }
-        100% { 
+        100% {
             transform: translateY(-10vh) translateX(100px) rotate(360deg) scale(0);
             opacity: 0;
         }
