@@ -1157,6 +1157,7 @@ def create_streamlit_ui():
       </div>
 
     </div>
+    <hr style="margin-top: 2rem; margin-bottom: 2rem; border: none; border-top: 1px solid rgba(255,255,255,0.1);"/>
     """, unsafe_allow_html=True)
 
     
